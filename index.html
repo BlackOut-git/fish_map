@@ -2,55 +2,13 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>다음 지도 API</title>
-    <style>
-        body {
-            background-color: gray;
-        }
-        #logo{
-           text-align: center;
-        }
-		.top_menu{
-			width:100%;
-			height:20px;
-			text-align:center;
-			padding:20px;
-			background-color:darkgray;
-			border-radius : 10px;
-			font-size: 20px;
-		}
-		#map{
-			width: 100%;
-			height: 1000px;
-		}
-		.info {
-			font-size: 12px;
-            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
-		}
-        .info .title {
-            padding: 5px 0 0 10px;
-            height: 20px;
-            background: #eee;
-            border-bottom: 1px solid #ddd;
-            font-size: 16px;
-            font-weight: bold;
-			text-align: center;
-        }
-        .info .body {
-            position: relative;
-        }
-        .info .desc {
-            position: relative;
-			text-align: center;
-			margin: 10px;
-			width: 150px;
-        }
-    </style>
+	<title>낚시 정보 서비스</title>
+	<link rel="stylesheet" href="./src/style.css">
 </head>
 <body>
     <header id="header">
 		<div id="logo">
-				<a href="map2.html"><img src="./img/logo.png" width ="800px" height ="200px"></a>		
+				<img src="./src/logo.png" width ="800px" height ="200px"></img>
 		</div>
 		<table class="top_menu">
 			<tr>
@@ -75,9 +33,8 @@
 
 		var map = new kakao.maps.Map(mapContainer, mapOption);
 
-		var positions = [
-			{
-				iwPosition: new kakao.maps.LatLng(35.187, 129.227),
+		var positions = [{
+				latlng: new kakao.maps.LatLng(35.187, 129.227),
 				iwContent:`
 					<div class="info">
 						<div class="title">
@@ -85,14 +42,12 @@
 						</div>
 						<div class="body">
 							<div class="desc">
-								수온 15.5°C | 시각 : 00:00
+								수온 15.5°C | 시간 00:00
 							</div>
 						</div>
 					</div>
-				`
-			},
-			{
-				iwPosition: new kakao.maps.LatLng(38.0827, 128.6984),
+				`},{
+				latlng: new kakao.maps.LatLng(38.0827, 128.6984),
 				iwContent:`
 					<div class="info">
 						<div class="title">
@@ -100,14 +55,12 @@
 						</div>
 						<div class="body">
 							<div class="desc">
-								수온 15.5°C | 시각 : 00:00
+								수온 15.5°C | 시간 00:00
 							</div>
 						</div>
 					</div>
-				`
-			},
-			{
-				iwPosition: new kakao.maps.LatLng(36.5737, 129.437),
+				`},{
+				latlng: new kakao.maps.LatLng(36.5737, 129.437),
 				iwContent:`
 					<div class="info">
 						<div class="title">
@@ -115,14 +68,12 @@
 						</div>
 						<div class="body">
 							<div class="desc">
-								수온 15.5°C | 시각 : 00:00
+								수온 15.5°C | 시간 00:00
 							</div>
 						</div>
 					</div>
-				`
-			},
-			{
-				iwPosition: new kakao.maps.LatLng(37.799, 128.9492),
+				`},{
+				latlng: new kakao.maps.LatLng(37.799, 128.9492),
 				iwContent:`
 					<div class="info">
 						<div class="title">
@@ -130,14 +81,12 @@
 						</div>
 						<div class="body">
 							<div class="desc">
-								수온 15.5°C | 시각 : 00:00
+								수온 15.5°C | 시간 00:00
 							</div>
 						</div>
 					</div>
-				`
-			},
-			{
-				iwPosition: new kakao.maps.LatLng(37.3023, 129.3127),
+				`},{
+				latlng: new kakao.maps.LatLng(37.3023, 129.3127),
 				iwContent:`
 					<div class="info">
 						<div class="title">
@@ -145,20 +94,180 @@
 						</div>
 						<div class="body">
 							<div class="desc">
-								수온 15.5°C | 시각 : 00:00
+								수온 15.5°C | 시간 00:00
 							</div>
 						</div>
 					</div>
-				`
-			},
+				`},{
+				latlng: new kakao.maps.LatLng(38.2494, 128.6245),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							고성 봉포 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(35.9607, 129.5497),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							구룡포 하정 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(35.1825, 129.2352),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							기장(한수원) 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(35.3186, 129.3147),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							고리 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(35.3847, 129.368),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							진하 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(35.6347, 129.368),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							정자 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(35.7177, 129.495),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							월성 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(35.8658, 129.5472),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							양포 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(37.0194, 129.425),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							온양 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(37.1, 129.4041),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							덕천 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},{
+				latlng: new kakao.maps.LatLng(37.1191, 129.3958),
+				iwContent:`
+					<div class="info">
+						<div class="title">
+							나곡 관측소
+						</div>
+						<div class="body">
+							<div class="desc">
+								수온 15.5°C | 시간 00:00
+							</div>
+						</div>
+					</div>
+				`},
 		];
 
 		for (var i = 0; i < positions.length; i++) {
-			var infowindow = new kakao.maps.InfoWindow({
+			var marker = new kakao.maps.Marker({
 				map: map,
-				position: positions[i].iwPosition, 
+				position: positions[i].latlng
+			})
+
+			var infowindow = new kakao.maps.InfoWindow({
 				content: positions[i].iwContent 
 			});
+
+			kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+   			kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+		}
+
+		function makeOverListener(map, marker, infowindow) {
+			return function() {
+				infowindow.open(map, marker);
+			};
+		}
+
+		function makeOutListener(infowindow) {
+			return function() {
+				infowindow.close();
+			};
 		}
 	</script>
 </body>
