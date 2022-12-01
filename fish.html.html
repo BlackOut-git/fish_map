@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>다음 지도 API</title>
+    <style>
+        body {
+            background-color: gray;
+        }
+        #logo{
+           text-align: center;
+        }
+		.top_menu{
+			width:100%;
+			height:20px;
+			text-align:center;
+			padding:20px;
+			background-color:darkgray;
+			border-radius : 10px;
+			font-size: 20px;
+
+		}
+		#map{
+			width: 100%;
+			height: 1000px;
+		}
+		.info {
+			font-size: 12px;
+            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+		}
+        .info .title {
+            padding: 5px 0 0 10px;
+            height: 30px;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-size: 18px;
+            font-weight: bold;
+			text-align: center;
+        }
+        .info .body {
+            position: relative;
+        }
+        .info .desc {
+            position: relative;
+			text-align: center;
+			margin: 10px;
+			width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+		<div id="logo">
+				<a href="map2.html"><img src="./img/logo.png" width ="800px" height ="200px"></a>		
+		</div>
+		<table class="top_menu">
+			<tr>
+				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
+					<a href="fish.html">메인화면</a></td>
+				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
+					<a href="fish.html">어장정도</a></td>
+				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
+					<a href="fish.html">종합정보</a></td>
+			</tr>
+		</table>
+	</header>		
+
+	<div id="map"></div>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=af6aa8f37383bb772256753421dfd821"></script>
+	<script>
+		var mapContainer = document.getElementById('map'),
+			mapOption = { 
+				center: new kakao.maps.LatLng(36, 127.5),
+				level: 12
+			};
+
+		var map = new kakao.maps.Map(mapContainer, mapOption);
+
+
+
+		var markerPosition = new kakao.maps.LatLng(37.799, 128.9492); 
+		var marker = new kakao.maps.Marker({
+			position: markerPosition
+		});
+
+		marker.setMap(map);
+
+		var iwContent =`
+			<div class="info">
+				<div class="title">
+					강릉 관측소
+				</div>
+				<div class="body">
+					<div class="desc">
+						수온 15.5°C | 시각 : 00:00
+					</div>
+				</div>
+			</div>
+			`,
+		
+		iwPosition = new kakao.maps.LatLng(35.187, 129.227);
+
+		var infowindow = new kakao.maps.InfoWindow({
+			position : iwPosition, 
+			content : iwContent 
+		});
+
+		infowindow.open(map, marker); 
+	</script>
+</body>
+</html>
