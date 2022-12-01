@@ -64,48 +64,5 @@
 			</tr>
 		</table>
 	</header>		
-
-	<div id="map"></div>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=af6aa8f37383bb772256753421dfd821"></script>
-	<script>
-		var mapContainer = document.getElementById('map'),
-			mapOption = { 
-				center: new kakao.maps.LatLng(36, 127.5),
-				level: 12
-			};
-
-		var map = new kakao.maps.Map(mapContainer, mapOption);
-
-
-
-		var markerPosition = new kakao.maps.LatLng(37.799, 128.9492); 
-		var marker = new kakao.maps.Marker({
-			position: markerPosition
-		});
-
-		marker.setMap(map);
-
-		var iwContent =`
-			<div class="info">
-				<div class="title">
-					강릉 관측소
-				</div>
-				<div class="body">
-					<div class="desc">
-						수온 15.5°C | 시각 : 00:00
-					</div>
-				</div>
-			</div>
-			`,
-		
-		iwPosition = new kakao.maps.LatLng(35.187, 129.227);
-
-		var infowindow = new kakao.maps.InfoWindow({
-			position : iwPosition, 
-			content : iwContent 
-		});
-
-		infowindow.open(map, marker); 
-	</script>
 </body>
 </html>
