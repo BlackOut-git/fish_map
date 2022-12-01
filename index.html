@@ -18,6 +18,7 @@
 			background-color:darkgray;
 			border-radius : 10px;
 			font-size: 20px;
+
 		}
 		#map{
 			width: 100%;
@@ -55,13 +56,11 @@
 		<table class="top_menu">
 			<tr>
 				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
-					<a href="fish.html">HOME</a></td>
+					<a href="fish.html">메인화면</a></td>
 				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
-					<a href="fish.html">MAP</a></td>
+					<a href="fish.html">어장정도</a></td>
 				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
-					<a href="fish.html">NEWS</a></td>
-				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
-					<a href="fish.html">LINK</a></td>
+					<a href="fish.html">종합정보</a></td>
 			</tr>
 		</table>
 	</header>		
@@ -69,29 +68,27 @@
 	<div id="map"></div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=af6aa8f37383bb772256753421dfd821"></script>
 	<script>
-		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		var mapContainer = document.getElementById('map'),
 			mapOption = { 
-				center: new kakao.maps.LatLng(36, 127.5), // 지도의 중심좌표
-				level: 12 // 지도의 확대 레벨
+				center: new kakao.maps.LatLng(36, 127.5),
+				level: 12
 			};
 
 		var map = new kakao.maps.Map(mapContainer, mapOption);
 
-		// 마커가 표시될 위치입니다 
-		var markerPosition  = new kakao.maps.LatLng(37.799, 128.9492); 
 
-		// 마커를 생성합니다
+
+		var markerPosition = new kakao.maps.LatLng(37.799, 128.9492); 
 		var marker = new kakao.maps.Marker({
 			position: markerPosition
 		});
 
-		// 마커가 지도 위에 표시되도록 설정합니다
 		marker.setMap(map);
 
 		var iwContent =`
 			<div class="info">
 				<div class="title">
-					동해 강릉 관측소
+					강릉 관측소
 				</div>
 				<div class="body">
 					<div class="desc">
@@ -99,16 +96,15 @@
 					</div>
 				</div>
 			</div>
-			`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-			iwPosition = new kakao.maps.LatLng(37.799, 128.9492); //인포윈도우 표시 위치입니다
+			`,
+		
+		iwPosition = new kakao.maps.LatLng(35.187, 129.227);
 
-		// 인포윈도우를 생성합니다
 		var infowindow = new kakao.maps.InfoWindow({
 			position : iwPosition, 
 			content : iwContent 
 		});
-		
-		// 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+
 		infowindow.open(map, marker); 
 	</script>
 </body>
