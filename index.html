@@ -32,16 +32,13 @@
 		var key = "27B577B6-88AE-464D-B558-55D33057EFB2"
 		var mmList = [{
 			mmaf: 101,
-			mmsi: `994401597,994401579,994401583,994401584`
-		},{
-			mmaf: 102,
-			mmsi: `994401001,994401040,994401000`
+			mmsi: `994401579,994401583`
 		},{
 			mmaf: 103,
 			mmsi: `994403110`
 		},{
 			mmaf: 104,
-			mmsi: `1000520,1000507`
+			mmsi: `1000520`
 		},{
 			mmaf: 105,
 			mmsi: `4422880`
@@ -63,31 +60,97 @@
 				dataType: "json"
 			}).done(function(data){
 				for(var j = 0; j < data.result.recordset.length; j++){
+					function convertMmDate(res) {
+						let mmDate = res[4]+res[5]+"."+res[6]+res[7]+' '+res[8]+res[9]+":"+res[10]+res[11]
+						return mmDate
+						console.log(res)
+					}
+					var mmDate = convertMmDate(data.result.recordset[j].DATETIME)
+
+					var AIR_TEMPERATURE = checkRes(data.result.recordset[j].AIR_TEMPERATURE)
+					var WATER_TEMPER = checkRes(data.result.recordset[j].WATER_TEMPER)
+					var WIND_DIRECT = checkRes(data.result.recordset[j].WIND_DIRECT)
+					var WIND_SPEED = checkRes(data.result.recordset[j].WIND_SPEED)
+					var HUMIDITY = checkRes(data.result.recordset[j].HUMIDITY)
+					var AIR_PRESSURE = checkRes(data.result.recordset[j].AIR_PRESSURE)
+					var SALINITY = checkRes(data.result.recordset[j].SALINITY)
+
+					function checkRes(res) {
+						if ( res == undefined ) {
+							let res = "정보없음"
+							return res;
+						} else { return res }
+					}
+
+
+
 					var positions = {
 							latlng: new kakao.maps.LatLng(data.result.recordset[j].LATITUDE, data.result.recordset[j].LONGITUDE),
 							iwContent:
-							`<div class="wrap">
-									<div class="info">
-										<div class="title">
-											${data.result.recordset[j].MMSI_NM}
-											<div class="close" onclick="" title="닫기"></div>
-										</div>
-										<div class="body">
-											<div class="img">
-												<img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">
+							`
+							<div class="ui card">
+								<div class="content">
+									<div class="header"><i class="location arrow icon"></i>${data.result.recordset[j].MMSI_NM}</div>
+								</div>
+								<div class="content">
+									<div class="ui small feed">
+										<div class="event">
+											<div class="content">
+											<div class="summary">
+												<div class="ui label">기온 <div class="detail">${AIR_TEMPERATURE}℃</div></div> | <div class="ui label">수온 <div class="detail">${WATER_TEMPER}℃</div></div>
 											</div>
-											<div class="desc">
-												<div class="ellipsis">
-													수온 ${data.result.recordset[j].WATER_TEMPER}℃
-												</div>
-												<div class="jibun ellipsis">
-													${data.result.recordset[j].DATETIME}
-												</div>
-												<div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">지도열기</a></div>
+											</div>
+										</div>
+										<div class="event">
+											<div class="content">
+											<div class="summary">
+												<div class="ui label">풍향 ${WIND_DIRECT}℃</div> | <div class="ui label">풍속 ${WIND_SPEED}℃</div>
+											</div>
+											</div>
+										</div>
+										<div class="event">
+											<div class="content">
+											<div class="summary">
+												습도 ${HUMIDITY}% | 기압 ${AIR_PRESSURE}hPa
+											</div>
+											</div>
+										</div>
+										<div class="event">
+											<div class="content">
+											<div class="summary">
+												염분 ${SALINITY}psu | <div class="ui label"><i class="clock icon"></i>${mmDate}</div>
+											</div>
 											</div>
 										</div>
 									</div>
-								</div>`
+								</div>
+								<div class="extra content">
+									<button class="ui button" onclick="location.href='https://map.kakao.com/link/map/${data.result.recordset[j].MMSI_NM},${data.result.recordset[j].LATITUDE},${data.result.recordset[j].LONGITUDE}'"><i class="map icon"></i>지도 바로가기</button>
+								</div>
+								</div>
+							`
+							// `<div class="wrap">
+							// 		<div class="info">
+							// 			<div class="title">
+							// 				${data.result.recordset[j].MMSI_NM}
+							// 				<div class="close" onclick="" title="닫기"></div>
+							// 			</div>
+							// 			<div class="body">
+							// 				<div class="img">
+							// 					<img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">
+							// 				</div>
+							// 				<div class="desc">
+							// 					<div class="ellipsis">
+							// 						수온 ${data.result.recordset[j].WATER_TEMPER}℃
+							// 					</div>
+							// 					<div class="jibun ellipsis">
+							// 						${data.result.recordset[j].DATETIME}
+							// 					</div>
+							// 					<div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">지도열기</a></div>
+							// 				</div>
+							// 			</div>
+							// 		</div>
+							// 	</div>`
 							}
 
 					var marker = new kakao.maps.Marker({
