@@ -82,13 +82,10 @@
 						} else { return res }
 					}
 
-
-
 					var positions = {
 							latlng: new kakao.maps.LatLng(data.result.recordset[j].LATITUDE, data.result.recordset[j].LONGITUDE),
 							iwContent:
-							`
-							<div class="ui card">
+							`<div class="ui card">
 								<div class="content">
 									<div class="header"><i class="location arrow icon"></i>${data.result.recordset[j].MMSI_NM}</div>
 								</div>
@@ -104,7 +101,7 @@
 										<div class="event">
 											<div class="content">
 											<div class="summary">
-												<div class="ui label">풍향 ${WIND_DIRECT}℃</div> | <div class="ui label">풍속 ${WIND_SPEED}℃</div>
+												<div class="ui label">풍향 ${WIND_DIRECT}°</div> | <div class="ui label">풍속 ${WIND_SPEED}㎧</div>
 											</div>
 											</div>
 										</div>
@@ -127,8 +124,7 @@
 								<div class="extra content">
 									<button class="ui button" onclick="location.href='https://map.kakao.com/link/map/${data.result.recordset[j].MMSI_NM},${data.result.recordset[j].LATITUDE},${data.result.recordset[j].LONGITUDE}'"><i class="map icon"></i>지도 바로가기</button>
 								</div>
-								</div>
-							`
+								</div>`
 							// `<div class="wrap">
 							// 		<div class="info">
 							// 			<div class="title">
