@@ -20,10 +20,10 @@ body {
 .wrap {
     position: absolute;
     left: 0;
-    bottom: 40px;
+    bottom: -36px;
     width: 288px;
     height: 132px;
-    margin-left: -144px;
+    margin-left: -68px;
     text-align: left;
     overflow: hidden;
     font-size: 12px;
