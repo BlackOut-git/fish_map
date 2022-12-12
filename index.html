@@ -24,15 +24,16 @@
 	<script>
 		var mapContainer = document.getElementById('map'),
 			mapOption = { 
-				center: new kakao.maps.LatLng(36, 127.5),
-				level: 12
+				center: new kakao.maps.LatLng(36, 127.5), // 지도 중앙 좌표
+				level: 12 // 지도 확대 수준
 			};
 
 		var map = new kakao.maps.Map(mapContainer, mapOption);
-		var key = "27B577B6-88AE-464D-B558-55D33057EFB2"
-		var mmList = [{
-			mmaf: 101,
-			mmsi: `994401579,994401583`
+
+		var key = "27B577B6-88AE-464D-B558-55D33057EFB2" // Open API Key
+		var mmList = [{ // Open API 관측지점 리스트
+			mmaf: 101, // 기관명 mmaf
+			mmsi: `994401579,994401583` // 지점코드 mmsi
 		},{
 			mmaf: 103,
 			mmsi: `994403110`
@@ -54,36 +55,37 @@
 		}
 		]
 
+		// 기관명, 지점코드에 대해 반복
 		for (var i = 0; i < mmList.length; i++){
 			$.ajax({
 				url: "http://marineweather.nmpnt.go.kr:8001/openWeatherNow.do?serviceKey="+key+"&resultType=json&mmaf="+mmList[i].mmaf+"&mmsi="+mmList[i].mmsi,
 				dataType: "json"
 			}).done(function(data){
 				for(var j = 0; j < data.result.recordset.length; j++){
+					// yyyyMMddHHmmss -> MM.dd HH:mm
 					function convertMmDate(res) {
 						let mmDate = res[4]+res[5]+"."+res[6]+res[7]+' '+res[8]+res[9]+":"+res[10]+res[11]
 						return mmDate
-						console.log(res)
 					}
 					var mmDate = convertMmDate(data.result.recordset[j].DATETIME)
 
-					var AIR_TEMPERATURE = checkRes(data.result.recordset[j].AIR_TEMPERATURE)
-					var WATER_TEMPER = checkRes(data.result.recordset[j].WATER_TEMPER)
-					var WIND_DIRECT = checkRes(data.result.recordset[j].WIND_DIRECT)
-					var WIND_SPEED = checkRes(data.result.recordset[j].WIND_SPEED)
-					var HUMIDITY = checkRes(data.result.recordset[j].HUMIDITY)
-					var AIR_PRESSURE = checkRes(data.result.recordset[j].AIR_PRESSURE)
-					var SALINITY = checkRes(data.result.recordset[j].SALINITY)
-
+					// response가 undefined인지 감지
 					function checkRes(res) {
 						if ( res == undefined ) {
 							let res = "정보없음"
 							return res;
 						} else { return res }
 					}
+					var AIR_TEMPERATURE = checkRes(data.result.recordset[j].AIR_TEMPERATURE) // 기온℃
+					var WATER_TEMPER = checkRes(data.result.recordset[j].WATER_TEMPER) // 수온℃
+					var WIND_DIRECT = checkRes(data.result.recordset[j].WIND_DIRECT) // 풍향°
+					var WIND_SPEED = checkRes(data.result.recordset[j].WIND_SPEED) // 풍속㎧
+					var HUMIDITY = checkRes(data.result.recordset[j].HUMIDITY) // 습도%
+					var AIR_PRESSURE = checkRes(data.result.recordset[j].AIR_PRESSURE) // 기압hPa
+					var SALINITY = checkRes(data.result.recordset[j].SALINITY) // 염분psu
 
 					var positions = {
-							latlng: new kakao.maps.LatLng(data.result.recordset[j].LATITUDE, data.result.recordset[j].LONGITUDE),
+							latlng: new kakao.maps.LatLng(data.result.recordset[j].LATITUDE, data.result.recordset[j].LONGITUDE), // 마커 좌표 받아오기
 							iwContent:
 							`<div class="ui card">
 								<div class="content">
@@ -125,50 +127,32 @@
 									<button class="ui button" onclick="location.href='https://map.kakao.com/link/map/${data.result.recordset[j].MMSI_NM},${data.result.recordset[j].LATITUDE},${data.result.recordset[j].LONGITUDE}'"><i class="map icon"></i>지도 바로가기</button>
 								</div>
 								</div>`
-							// `<div class="wrap">
-							// 		<div class="info">
-							// 			<div class="title">
-							// 				${data.result.recordset[j].MMSI_NM}
-							// 				<div class="close" onclick="" title="닫기"></div>
-							// 			</div>
-							// 			<div class="body">
-							// 				<div class="img">
-							// 					<img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">
-							// 				</div>
-							// 				<div class="desc">
-							// 					<div class="ellipsis">
-							// 						수온 ${data.result.recordset[j].WATER_TEMPER}℃
-							// 					</div>
-							// 					<div class="jibun ellipsis">
-							// 						${data.result.recordset[j].DATETIME}
-							// 					</div>
-							// 					<div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">지도열기</a></div>
-							// 				</div>
-							// 			</div>
-							// 		</div>
-							// 	</div>`
 							}
 
+					// 좌표에 마커 생성
 					var marker = new kakao.maps.Marker({
 						map: map,
 						position: positions.latlng
 					});
 
+					// 마커에 인포윈도우 생성
 					var infowindow = new kakao.maps.InfoWindow({
 							content: positions.iwContent,
 							removable: true
 						});
 
-					kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
-					kakao.maps.event.addListener(marker, 'rightclick', makeOutListener(infowindow));
+					kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow)); // 좌클릭: 인포윈도우 활성화
+					kakao.maps.event.addListener(marker, 'rightclick', makeOutListener(infowindow)); // 우클릭: 인포윈도우 비활성화
 				}
 
+				// 인포윈도우 활성화
 				function makeOverListener(map, marker, infowindow) {
 					return function() {
 						infowindow.open(map, marker);
 					};
 				}
 
+				// 인포윈도우 비활성화
 				function makeOutListener(infowindow) {
 					return function() {
 						infowindow.close();
