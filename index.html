@@ -30,28 +30,63 @@
 
 		var map = new kakao.maps.Map(mapContainer, mapOption);
 
-		var key = "27B577B6-88AE-464D-B558-55D33057EFB2" // Open API Key
-		var mmList = [{ // Open API 관측지점 리스트
-			mmaf: 101, // 기관명 mmaf
-			mmsi: `994401579,994401583` // 지점코드 mmsi
-		},{
+		// Open API Key
+		var key = "27B577B6-88AE-464D-B558-55D33057EFB2" 
+		// Open API 관측지점 리스트
+		var mmList = [
+		{ 
+			// 기관명 mmaf
+			mmaf: 101,
+			// 지점코드 mmsi
+			mmsi: `220681651,220681654,994401579,994401583,994401587,994401588,994401578`
+		},
+		{
+			mmaf: 102,
+			mmsi: `994401017,994401016,994401015,994401014,994401013,994401018,994401019,994401021,994401022,994401023,994401039,1029001`
+		},
+		{
 			mmaf: 103,
-			mmsi: `994403110`
-		},{
+			mmsi: `994402925,994402955,994403110`
+		},
+		{
 			mmaf: 104,
-			mmsi: `1000520`
-		},{
+			mmsi: `1000520,1000519`
+		},
+		{
 			mmaf: 105,
-			mmsi: `4422880`
-		},{
+			mmsi: `4402692,994402675,4422880,994402651`
+		},
+		{
+			mmaf: 106,
+			mmsi: `994401037,994401042`
+		},
+		{
+			mmaf: 107,
+			mmsi: `1079001,440101007,440101005,440101004,440101001,440101002,440101003,440101006`
+		},
+		{
+			mmaf: 108,
+			mmsi: `994403652,4406120,994403654`
+		},
+		{
 			mmaf: 109,
-			mmsi: `994401623,994401606,2091003,2095081`
-		},{
+			mmsi: `994401606,2095081`
+		},
+		{
 			mmaf: 110,
-			mmsi: `994403579`
-		},{
+			mmsi: `994403582,994403579`
+		},
+		{
+			mmaf: 111,
+			mmsi: `994403810,994403808`
+		},
+		{
+			mmaf: 112,
+			mmsi: `994403895,994403897,994403894,994403901`
+		},
+		{
 			mmaf: 113,
-			mmsi: `440103006`
+			mmsi: `440103005,440103007,440103006,440103003,440103004,440103002,440103001`
 		}
 		]
 
@@ -141,8 +176,10 @@
 							removable: true
 						});
 
-					kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow)); // 좌클릭: 인포윈도우 활성화
-					kakao.maps.event.addListener(marker, 'rightclick', makeOutListener(infowindow)); // 우클릭: 인포윈도우 비활성화
+					// 좌클릭: 인포윈도우 활성화
+					kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+					// 우클릭: 인포윈도우 비활성화
+					kakao.maps.event.addListener(marker, 'rightclick', makeOutListener(infowindow)); 
 				}
 
 				// 인포윈도우 활성화
