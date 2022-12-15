@@ -4,110 +4,192 @@
 	<meta charset="utf-8">
 	<title>낚시 정보 서비스</title>
 	<link rel="stylesheet" href="./src/style.css">
+	<link rel="stylesheet" type="text/css" href="src/semantic/semantic.min.css">
 	<script src="src/jquery-3.6.1.min.js"></script>
+	<script src="src/semantic/semantic.min.js"></script>
 </head>
 <body>
     <header id="header">
 		<div id="logo">
-				<img src="./src/logo.png" width ="800px" height ="200px"></img>
+			<img class="ui centered circular image" src="./src/logo.png" width ="800px" height ="100px"></img>
 		</div>
-		<table class="top_menu">
-			<tr>
-				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
-					<a href="index.html">메인화면</a></td>
-				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
-					<a href="fish.html">어장정보</a></td>
-				<td onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor=''">
-					<a href="link.html">종합정보</a></td>
-			</tr>
-		</table>
-	</header>		
+		<div class="ui three item menu">
+			<a class="item active" href="index.html">메인화면</a>
+			<a class="item" href="fish.html">어장정보</a>
+			<a class="item" href="link.html">종합정보</a>
+		</div>
+	</header>
 	<div id="map"></div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=af6aa8f37383bb772256753421dfd821"></script>
 	<script>
 		var mapContainer = document.getElementById('map'),
 			mapOption = { 
-				center: new kakao.maps.LatLng(36, 127.5),
-				level: 12
+				center: new kakao.maps.LatLng(36, 127.5), // 지도 중앙 좌표
+				level: 12 // 지도 확대 수준
 			};
 
 		var map = new kakao.maps.Map(mapContainer, mapOption);
-		var key = "27B577B6-88AE-464D-B558-55D33057EFB2"
-		var mmList = [{
+
+		// Open API Key
+		var key = "27B577B6-88AE-464D-B558-55D33057EFB2" 
+		// Open API 관측지점 리스트
+		var mmList = [
+		{ 
+			// 기관명 mmaf
 			mmaf: 101,
-			mmsi: `994401597,994401579,994401583,994401584`
-		},{
+			// 지점코드 mmsi
+			mmsi: `220681651,220681654,994401579,994401583,994401587,994401588,994401578`
+		},
+		{
 			mmaf: 102,
-			mmsi: `994401001,994401040,994401000`
-		},{
+			mmsi: `994401017,994401016,994401015,994401014,994401013,994401018,994401019,994401021,994401022,994401023,994401039,1029001`
+		},
+		{
 			mmaf: 103,
-			mmsi: `994403110`
-		},{
+			mmsi: `994402925,994402955,994403110`
+		},
+		{
 			mmaf: 104,
-			mmsi: `1000520,1000507`
-		},{
+			mmsi: `1000520,1000519`
+		},
+		{
 			mmaf: 105,
-			mmsi: `4422880`
-		},{
+			mmsi: `4402692,994402675,4422880,994402651`
+		},
+		{
+			mmaf: 106,
+			mmsi: `994401037,994401042`
+		},
+		{
+			mmaf: 107,
+			mmsi: `1079001,440101007,440101005,440101004,440101001,440101002,440101003,440101006`
+		},
+		{
+			mmaf: 108,
+			mmsi: `994403652,4406120,994403654`
+		},
+		{
 			mmaf: 109,
-			mmsi: `994401623,994401606,2091003,2095081`
-		},{
+			mmsi: `994401606,2095081`
+		},
+		{
 			mmaf: 110,
-			mmsi: `994403579`
-		},{
+			mmsi: `994403582,994403579`
+		},
+		{
+			mmaf: 111,
+			mmsi: `994403810,994403808`
+		},
+		{
+			mmaf: 112,
+			mmsi: `994403895,994403897,994403894,994403901`
+		},
+		{
 			mmaf: 113,
-			mmsi: `440103006`
+			mmsi: `440103005,440103007,440103006,440103003,440103004,440103002,440103001`
 		}
 		]
 
+		// 기관명, 지점코드에 대해 반복
 		for (var i = 0; i < mmList.length; i++){
 			$.ajax({
 				url: "http://marineweather.nmpnt.go.kr:8001/openWeatherNow.do?serviceKey="+key+"&resultType=json&mmaf="+mmList[i].mmaf+"&mmsi="+mmList[i].mmsi,
 				dataType: "json"
 			}).done(function(data){
 				for(var j = 0; j < data.result.recordset.length; j++){
+					// yyyyMMddHHmmss -> MM.dd HH:mm
+					function convertMmDate(res) {
+						let mmDate = res[4]+res[5]+"."+res[6]+res[7]+' '+res[8]+res[9]+":"+res[10]+res[11]
+						return mmDate
+					}
+					var mmDate = convertMmDate(data.result.recordset[j].DATETIME)
+
+					// response가 undefined인지 감지
+					function checkRes(res) {
+						if ( res == undefined ) {
+							let res = "정보없음"
+							return res;
+						} else { return res }
+					}
+					var AIR_TEMPERATURE = checkRes(data.result.recordset[j].AIR_TEMPERATURE) // 기온℃
+					var WATER_TEMPER = checkRes(data.result.recordset[j].WATER_TEMPER) // 수온℃
+					var WIND_DIRECT = checkRes(data.result.recordset[j].WIND_DIRECT) // 풍향°
+					var WIND_SPEED = checkRes(data.result.recordset[j].WIND_SPEED) // 풍속㎧
+					var HUMIDITY = checkRes(data.result.recordset[j].HUMIDITY) // 습도%
+					var AIR_PRESSURE = checkRes(data.result.recordset[j].AIR_PRESSURE) // 기압hPa
+					var SALINITY = checkRes(data.result.recordset[j].SALINITY) // 염분psu
+
 					var positions = {
-							latlng: new kakao.maps.LatLng(data.result.recordset[j].LATITUDE, data.result.recordset[j].LONGITUDE),
-							iwContent:`
-								<div class="wrap">
-									<div class="info">
-										<div class="title">
-											${data.result.recordset[j].MMSI_NM}
+							latlng: new kakao.maps.LatLng(data.result.recordset[j].LATITUDE, data.result.recordset[j].LONGITUDE), // 마커 좌표 받아오기
+							iwContent:
+							`<div class="ui card">
+								<div class="content">
+									<div class="header"><i class="location arrow icon"></i>${data.result.recordset[j].MMSI_NM}</div>
+								</div>
+								<div class="content">
+									<div class="ui small feed">
+										<div class="event">
+											<div class="content">
+											<div class="summary">
+												<div class="ui label">기온 ${AIR_TEMPERATURE}℃</div> | <div class="ui label">수온 ${WATER_TEMPER}℃</div>
+											</div>
+											</div>
 										</div>
-										<div class="body">
-											<div class="desc">
-												<div class="ellipsis">
-													수온 ${data.result.recordset[j].WATER_TEMPER}℃
-												</div>
-												<div class="jibun ellipsis">
-													${data.result.recordset[j].DATETIME}
-												</div>
-												<div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">지도열기</a></div>
+										<div class="event">
+											<div class="content">
+											<div class="summary">
+												<div class="ui label">풍향 ${WIND_DIRECT}°</div> | <div class="ui label">풍속 ${WIND_SPEED}㎧</div>
+											</div>
+											</div>
+										</div>
+										<div class="event">
+											<div class="content">
+											<div class="summary">
+												<div class="ui label">습도 ${HUMIDITY}%</div> | <div class="ui label">기압 ${AIR_PRESSURE}hPa</div>
+											</div>
+											</div>
+										</div>
+										<div class="event">
+											<div class="content">
+											<div class="summary">
+												<div class="ui label">염분 ${SALINITY}psu</div> | <div class="ui label"><i class="clock icon"></i>${mmDate}</div>
+											</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							`}
+								<div class="extra content">
+									<button class="ui button" onclick="location.href='https://map.kakao.com/link/map/${data.result.recordset[j].MMSI_NM},${data.result.recordset[j].LATITUDE},${data.result.recordset[j].LONGITUDE}'"><i class="map icon"></i>지도 바로가기</button>
+								</div>
+								</div>`
+							}
 
+					// 좌표에 마커 생성
 					var marker = new kakao.maps.Marker({
 						map: map,
 						position: positions.latlng
 					});
 
+					// 마커에 인포윈도우 생성
 					var infowindow = new kakao.maps.InfoWindow({
-							content: positions.iwContent 
+							content: positions.iwContent,
+							removable: true
 						});
 
-					kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-					kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+					// 좌클릭: 인포윈도우 활성화
+					kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+					// 우클릭: 인포윈도우 비활성화
+					kakao.maps.event.addListener(marker, 'rightclick', makeOutListener(infowindow)); 
 				}
 
+				// 인포윈도우 활성화
 				function makeOverListener(map, marker, infowindow) {
 					return function() {
 						infowindow.open(map, marker);
 					};
 				}
 
+				// 인포윈도우 비활성화
 				function makeOutListener(infowindow) {
 					return function() {
 						infowindow.close();
